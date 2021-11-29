@@ -29,7 +29,7 @@ function startAttack() {
 }
 
 async function attackProcess(gladiator, gladiatorInd) {
-    let speedToMs = (5 - gladiator.speed - 1) * 1000;
+    let speedToMs = (5 / gladiator.speed * 1000).toFixed(0);
 
     if (gladiators.length > 1) {
         let attackInterval = setInterval(() => {
@@ -70,7 +70,7 @@ function recalcHealthAndSpeed(hittingGladiator, beatenGladiator) {
     if (beatenGladiator.health > 30) {
         beatenGladiator.speed = +(beatenGladiator.speed * (beatenGladiator.health / initialHelath)).toFixed(3);
     } else if (beatenGladiator.health >= 0 && beatenGladiator.health <= 30) {
-        beatenGladiator.speed = +(beatenGladiator.speed * 3).toFixed(3);
+        beatenGladiator.speed = Math.min(5,(beatenGladiator.speed * 3)).toFixed(3);
     }
 
     console.log(`[${hittingGladiator.name} x ${hittingGladiator.health}] hits [${beatenGladiator.name} x ${beatenGladiator.health}] with power ${hittingGladiator.power}`);
