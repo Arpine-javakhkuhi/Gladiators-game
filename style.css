@@ -1,0 +1,98 @@
+h2 {
+    color: black;
+    text-align: center;
+}
+
+ul {
+    margin: 0;
+}
+
+.gladiators-game {
+    font-size: 1.2vw;
+    line-height: 1.5;
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+    flex-basis: 0;
+    gap: 10px;
+}
+
+.arena {
+    padding: 0.5vw 1.5vw 0;
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: rgb(235, 222, 222);
+    color: rgb(15, 49, 87);
+    min-width: 50vw;
+}
+
+.showArena {
+    padding: 0;
+}
+
+.gladiators-list {
+    padding: 0.5vw 1.5vw;
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: rgb(206, 180, 180);
+    color: rgb(67, 11, 104);
+    min-width: 30vw;
+}
+
+.gladiator-name {
+    font-size: 1.3vw;
+    color: rgb(86, 95, 5);
+}
+
+.hitting-name {
+    font-size: 1.3vw;
+    color: rgb(199, 12, 74);
+}
+
+.beaten-name {
+    font-size: 1.3vw;
+    color: rgb(65, 33, 33);
+}
+
+.warning {
+    color: rgb(161, 58, 17);
+}
+
+.negative {
+    color: red;
+}
+
+.positive {
+    color: green;
+}
+
+.positive::after, .negative::after {
+    content: '';
+    display: inline-block;
+    border-bottom: 1px solid black;
+    width: 100%;
+}
+
+.state {
+    color: rgb(0, 66, 128);
+}
+
+.state::after{
+    content: '';
+    display: inline-block;
+    border-top: 1px solid black;
+    width: 100%;
+}
+
+.winner {
+    font-size: 2vw;
+    font-weight: bold;
+    color: rgb(163, 22, 116);
+    margin: 0;
+}
+
+.winner-gladiator {
+    font-size: 1.5vw;
+    color: rgb(197, 18, 18);
+    padding: 0.5vw 1.5vw;
+}
