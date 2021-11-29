@@ -14,6 +14,10 @@ let intervals = [];
 const thumbsDown = String.fromCodePoint('0x1F44E');
 const thumbsUp = String.fromCodePoint('0x1F44D');
 
+let showArena = document.querySelector('.showArena');
+let gladiatorsUI = document.querySelector('.gladiators-list');
+let ol;
+
 start = () => {
     for (let i = 0; i < 10; i++) {
         gladiators.push(new Gladiators());
@@ -23,7 +27,12 @@ start = () => {
 }
 
 function startAttack() {
+    ol = document.createElement('ol');
+    gladiatorsUI.appendChild(ol);
+    ol.innerHTML += '<span class="state"></span>';
+
     for (let i = 0; i < gladiators.length; i++) {
+        ol.innerHTML += `<li><span class="gladiator-name">${gladiators[i].name}:</span> health ${gladiators[i].health}, power ${gladiators[i].power}, speed ${gladiators[i].speed}</li>`;
         attackProcess(gladiators[i], i);
     }
 }
@@ -43,8 +52,7 @@ async function attackProcess(gladiator, gladiatorInd) {
                     clearInterval(el);
                 });
                 intervals = [];
-
-                console.log(`${randomGladiator.name} is dying`);
+                showArena.innerHTML += `<span class="warning">${randomGladiator.name} is dying </span><br />`;
 
                 decision(gladiator, randomGladiator, randomGladiatorInd, gladiatorInd);
             }
@@ -73,7 +81,7 @@ function recalcHealthAndSpeed(hittingGladiator, beatenGladiator) {
         beatenGladiator.speed = Math.min(5,(beatenGladiator.speed * 3)).toFixed(3);
     }
 
-    console.log(`[${hittingGladiator.name} x ${hittingGladiator.health}] hits [${beatenGladiator.name} x ${beatenGladiator.health}] with power ${hittingGladiator.power}`);
+    showArena.innerHTML += `<span class="hitting-name">[${hittingGladiator.name} x ${hittingGladiator.health}]</span> hits <span class="beaten-name">[${beatenGladiator.name} x ${beatenGladiator.health} ]</span> with power ${hittingGladiator.power} <br />`;
 }
 
 
@@ -82,16 +90,16 @@ function decision(hittingGladiator, beatenGladiator, beatenGladiatorInd, gladiat
     const randomDecision = caesarDecision[randomDecisionNum];
 
     if (randomDecision === 'Finish him') {
-        console.log(`Caesar showed ${thumbsDown} to ${beatenGladiator.name}!`);
-
+        showArena.innerHTML += `<span class="negative">Caesar showed ${thumbsDown} to ${beatenGladiator.name}!</span> <br />`;
         gladiators.splice(beatenGladiatorInd, 1);
         if (gladiators.length === 1) {
-            console.log(`${hittingGladiator.name} won the battle with health x${hittingGladiator.health}`);
+            showArena.innerHTML += `<p class="winner">${hittingGladiator.name} won the battle with health x${hittingGladiator.health}</p> <br />`;
+            gladiatorsUI.innerHTML += `<p class="winner-gladiator">${hittingGladiator.name}: health ${hittingGladiator.health}, power ${hittingGladiator.power}, speed ${hittingGladiator.speed}</p>`;
         } else {
             startAttack();
         }
     } else {
-        console.log(`Caesar showed ${thumbsUp} to ${beatenGladiator.name}!`);
+        showArena.innerHTML += `<span class="positive">Caesar showed ${thumbsUp} to ${beatenGladiator.name}</span> <br />`;
 
         beatenGladiator.health = 50;
         startAttack();
