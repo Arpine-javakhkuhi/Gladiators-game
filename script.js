@@ -32,6 +32,7 @@ async function attackProcess(gladiator, gladiatorInd) {
             let randomGladiatorInd = chooseRandomGladiator(gladiators, gladiatorInd);
             let randomGladiator = gladiators[randomGladiatorInd];
 
+            recalcHealthAndSpeed(gladiator, randomGladiator);
         }, speedToMs);
 
         intervals.push(attackInterval);
@@ -44,6 +45,19 @@ const chooseRandomGladiator = (gladiators, hittingGladiatorInd) => {
         randomRival = Math.floor(Math.random() * gladiators.length);
     } while (randomRival === hittingGladiatorInd)
     return randomRival;
+}
+
+function recalcHealthAndSpeed(hittingGladiator, beatenGladiator) {
+    const initialHelath = beatenGladiator.health;
+    beatenGladiator.health = Math.round(beatenGladiator.health - hittingGladiator.power);
+
+    if (beatenGladiator.health > 30) {
+        beatenGladiator.speed = +(beatenGladiator.speed * (beatenGladiator.health / initialHelath)).toFixed(3);
+    } else if (beatenGladiator.health >= 0 && beatenGladiator.health <= 30) {
+        beatenGladiator.speed = +(beatenGladiator.speed * 3).toFixed(3);
+    }
+
+    console.log(`[${hittingGladiator.name} x ${hittingGladiator.health}] hits [${beatenGladiator.name} x ${beatenGladiator.health}] with power ${hittingGladiator.power}`);
 }
 
 start();
