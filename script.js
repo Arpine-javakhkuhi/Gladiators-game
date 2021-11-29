@@ -8,7 +8,11 @@ class Gladiators {
 }
 
 let gladiators = [];
+const caesarDecision = ['Finish him', 'Live'];
 let intervals = [];
+
+const thumbsDown = String.fromCodePoint('0x1F44E');
+const thumbsUp = String.fromCodePoint('0x1F44D');
 
 start = () => {
     for (let i = 0; i < 10; i++) {
@@ -33,6 +37,17 @@ async function attackProcess(gladiator, gladiatorInd) {
             let randomGladiator = gladiators[randomGladiatorInd];
 
             recalcHealthAndSpeed(gladiator, randomGladiator);
+
+            if (randomGladiator.health <= 0) {
+                intervals.forEach((el) => {
+                    clearInterval(el);
+                });
+                intervals = [];
+
+                console.log(`${randomGladiator.name} is dying`);
+
+                decision(gladiator, randomGladiator, randomGladiatorInd, gladiatorInd);
+            }
         }, speedToMs);
 
         intervals.push(attackInterval);
@@ -47,6 +62,7 @@ const chooseRandomGladiator = (gladiators, hittingGladiatorInd) => {
     return randomRival;
 }
 
+
 function recalcHealthAndSpeed(hittingGladiator, beatenGladiator) {
     const initialHelath = beatenGladiator.health;
     beatenGladiator.health = Math.round(beatenGladiator.health - hittingGladiator.power);
@@ -58,6 +74,28 @@ function recalcHealthAndSpeed(hittingGladiator, beatenGladiator) {
     }
 
     console.log(`[${hittingGladiator.name} x ${hittingGladiator.health}] hits [${beatenGladiator.name} x ${beatenGladiator.health}] with power ${hittingGladiator.power}`);
+}
+
+
+function decision(hittingGladiator, beatenGladiator, beatenGladiatorInd, gladiatorInd) {
+    const randomDecisionNum = Math.floor(Math.random() * caesarDecision.length);
+    const randomDecision = caesarDecision[randomDecisionNum];
+
+    if (randomDecision === 'Finish him') {
+        console.log(`Caesar showed ${thumbsDown} to ${beatenGladiator.name}!`);
+
+        gladiators.splice(beatenGladiatorInd, 1);
+        if (gladiators.length === 1) {
+            console.log(`${hittingGladiator.name} won the battle with health x${hittingGladiator.health}`);
+        } else {
+            startAttack();
+        }
+    } else {
+        console.log(`Caesar showed ${thumbsUp} to ${beatenGladiator.name}!`);
+
+        beatenGladiator.health = 50;
+        startAttack();
+    }
 }
 
 start();
